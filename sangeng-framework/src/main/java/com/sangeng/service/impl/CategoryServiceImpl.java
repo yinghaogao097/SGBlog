@@ -45,7 +45,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         List<Category> categories = listByIds(collect);
         // 过滤掉分类表中状态不为0的
         categories = categories.stream()
-                .filter(category -> SystemConstants.STATUS_NORMAL.equals(category.getStatus()))
+                .filter(category -> SystemConstants.CATEGORY_STATUS_NORMAL.equals(category.getStatus()))
                 .collect(Collectors.toList());
 
         // 封装vo

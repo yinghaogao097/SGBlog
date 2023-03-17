@@ -10,11 +10,17 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HotArticleVo {
+public class LinkVo {
 
     private Long id;
-    //标题
-    private String title;
-    //访问量
-    private Long viewCount;
+
+    private String name;
+
+    private String logo;
+
+    private String description;
+    //网站地址
+    private String address;
+
+
 }
