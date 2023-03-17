@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$USER_HOME$/Desktop/SGBlog/SGBlog/资源/SQL/sg_article.sql" dialect="MySQL" />
+    <file url="file://$USER_HOME$/Desktop/SGBlog/SGBlog/资源/SQL/sg_article_tag.sql" dialect="MySQL" />
+    <file url="file://$USER_HOME$/Desktop/SGBlog/SGBlog/资源/SQL/sg_category.sql" dialect="MySQL" />
+    <file url="file://$USER_HOME$/Desktop/SGBlog/SGBlog/资源/SQL/sg_comment.sql" dialect="MySQL" />
+    <file url="file://$USER_HOME$/Desktop/SGBlog/SGBlog/资源/SQL/sg_link.sql" dialect="MySQL" />
+    <file url="file://$USER_HOME$/Desktop/SGBlog/SGBlog/资源/SQL/sg_menu.sql" dialect="MySQL" />
+    <file url="file://$USER_HOME$/Desktop/SGBlog/SGBlog/资源/SQL/sg_tag.sql" dialect="MySQL" />
+    <file url="file://$USER_HOME$/Desktop/SGBlog/SGBlog/资源/SQL/sys_user.sql" dialect="MySQL" />
+  </component>
+</project>

@@ -1,0 +1,4 @@
+# Project exclude paths
+/sangeng-admin/target/
+/sangeng-blog/target/
+/sangeng-framework/target/
