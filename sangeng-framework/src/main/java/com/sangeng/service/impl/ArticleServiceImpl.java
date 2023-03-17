@@ -67,7 +67,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                 .collect(Collectors.toList());
         // 封装查询结果
         List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(articles, ArticleListVo.class);
-
         return ResponseResult.okResult(new PageVo(articleListVos, page.getTotal()));
     }
 
