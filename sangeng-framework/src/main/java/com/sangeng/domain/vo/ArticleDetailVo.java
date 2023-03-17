@@ -6,24 +6,26 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+/**
+ * @Author：Achen
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleListVo {
-
+public class ArticleDetailVo {
     private Long id;
-    //标题
+    // 标题
     private String title;
-    //文章摘要
-    private String summary;
-    //所属分类名
+    // 所属分类Id
+    private String categoryId;
+    // 所属分类名
     private String categoryName;
-    //缩略图
-    private String thumbnail;
-    //访问量
+    // 是否允许评论
+    private String isComment;
+    // 访问量
     private Long viewCount;
-
+    // 文章内容
+    private String content;
     private Date createTime;
-
 
 }

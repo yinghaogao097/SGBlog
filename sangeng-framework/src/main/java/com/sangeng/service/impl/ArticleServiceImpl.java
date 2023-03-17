@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sangeng.constants.SystemConstants;
 import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.entity.Article;
+import com.sangeng.domain.entity.Category;
+import com.sangeng.domain.vo.ArticleDetailVo;
 import com.sangeng.domain.vo.ArticleListVo;
 import com.sangeng.domain.vo.HotArticleVo;
 import com.sangeng.domain.vo.PageVo;
@@ -68,6 +70,20 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         // 封装查询结果
         List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(articles, ArticleListVo.class);
         return ResponseResult.okResult(new PageVo(articleListVos, page.getTotal()));
+    }
+
+    @Override
+    public ResponseResult getArticleDetail(Integer id) {
+        // 根据id查询文章
+        Article article = getById(id);
+        // 转换VO
+        ArticleDetailVo articleDetailVo = BeanCopyUtils.copyBean(article, ArticleDetailVo.class);
+        // 根据分类id查询分类名
+        Category category = categoryService.getById(articleDetailVo.getCategoryId());
+        if (category != null) {
+            articleDetailVo.setCategoryName(category.getName());
+        }
+        return ResponseResult.okResult(articleDetailVo);
     }
 
 }
