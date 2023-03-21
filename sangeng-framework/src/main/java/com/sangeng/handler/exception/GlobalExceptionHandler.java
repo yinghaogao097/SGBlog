@@ -16,13 +16,23 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    //security的授权异常(AccessDeniedException及子类)抛出交由security AuthenticationEntryPoint 处理
+    /**
+     * security的授权异常(AccessDeniedException及子类)抛出交由security AuthenticationEntryPoint 处理
+     *
+     * @param e
+     * @throws AccessDeniedException
+     */
     @ExceptionHandler(AccessDeniedException.class)
     public void accessDeniedException(AccessDeniedException e) throws AccessDeniedException {
         throw e;
     }
 
-    //security的认证异常(AuthenticationException及子类)抛出由security AccessDeniedHandler 处理
+    /**
+     * security的认证异常(AuthenticationException及子类)抛出由security AccessDeniedHandler 处理
+     *
+     * @param e
+     * @throws AuthenticationException
+     */
     @ExceptionHandler(AuthenticationException.class)
     public void authenticationException(AuthenticationException e) throws AuthenticationException {
         throw e;

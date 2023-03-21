@@ -33,4 +33,14 @@ public class BlogLoginController {
         }
         return blogLoginService.login(user);
     }
+
+    /**
+     * 退出登录
+     *
+     * @return
+     */
+    @PostMapping("/logout")
+    public ResponseResult logout() {
+        return blogLoginService.logout();
+    }
 }
