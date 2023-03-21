@@ -6,10 +6,9 @@ import com.sangeng.domain.entity.Category;
 
 
 /**
- * 分类表(Category)表服务接口
+ * 类别 业务层
  *
- * @author makejava
- * @since 2023-03-17 10:26:11
+ * @author Achen
  */
 public interface CategoryService extends IService<Category> {
     /**

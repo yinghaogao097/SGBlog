@@ -24,7 +24,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * @Author：Achen
+ * 文章 业务层处理
+ *
+ * @author Achen
  */
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {

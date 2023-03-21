@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 /**
- * @Author：Achen
+ * 自定义 UserDetailsService
+ *
+ * @author Achen
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

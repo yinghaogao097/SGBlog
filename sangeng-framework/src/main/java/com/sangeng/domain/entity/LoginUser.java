@@ -9,7 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 /**
- * @Author：Achen
+ * 自定义UserDetails
+ *
+ * @author Achen
  */
 @Data
 @AllArgsConstructor

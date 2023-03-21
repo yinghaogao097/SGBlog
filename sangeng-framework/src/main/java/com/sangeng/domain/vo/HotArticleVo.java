@@ -13,8 +13,12 @@ import lombok.NoArgsConstructor;
 public class HotArticleVo {
 
     private Long id;
-    //标题
+    /**
+     * 标题
+     */
     private String title;
-    //访问量
+    /**
+     * 访问量
+     */
     private Long viewCount;
 }

@@ -14,17 +14,29 @@ import java.util.Date;
 @AllArgsConstructor
 public class ArticleDetailVo {
     private Long id;
-    // 标题
+    /**
+     *  标题
+     */
     private String title;
-    // 所属分类Id
+    /**
+     *  所属分类Id
+     */
     private String categoryId;
-    // 所属分类名
+    /**
+     *  所属分类名
+     */
     private String categoryName;
-    // 是否允许评论
+    /**
+     *  是否允许评论
+     */
     private String isComment;
-    // 访问量
+    /**
+     *  访问量
+     */
     private Long viewCount;
-    // 文章内容
+    /**
+     *  文章内容
+     */
     private String content;
     private Date createTime;
 

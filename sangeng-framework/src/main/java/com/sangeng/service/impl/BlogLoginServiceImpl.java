@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 /**
- * @Author：Achen
+ * 登陆 业务层处理
+ *
+ * @author Achen
  */
 @Service
 public class BlogLoginServiceImpl implements BlogLoginService {

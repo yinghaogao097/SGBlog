@@ -14,10 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 友链(Link)表服务实现类
+ * 友链 业务层处理
  *
- * @author makejava
- * @since 2023-03-17 17:26:16
+ * @author Achen
  */
 @Service("linkService")
 public class LinkServiceImpl extends ServiceImpl<LinkMapper, Link> implements LinkService {

@@ -5,6 +5,8 @@ import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.entity.Article;
 
 /**
+ * 文章 业务层
+ *
  * @Author：Achen
  */
 public interface ArticleService extends IService<Article> {

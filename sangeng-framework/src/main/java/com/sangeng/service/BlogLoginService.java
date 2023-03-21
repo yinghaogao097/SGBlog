@@ -4,9 +4,9 @@ import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.entity.User;
 
 /**
- * 登陆接口
+ * 登陆 业务层
  *
- * @Author：Achen
+ * @author Achen
  */
 public interface BlogLoginService {
     ResponseResult login(User user);

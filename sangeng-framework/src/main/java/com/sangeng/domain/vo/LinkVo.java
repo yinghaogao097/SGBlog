@@ -19,7 +19,9 @@ public class LinkVo {
     private String logo;
 
     private String description;
-    //网站地址
+    /**
+     * 网站地址
+     */
     private String address;
 
 

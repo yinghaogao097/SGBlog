@@ -6,10 +6,9 @@ import com.sangeng.domain.entity.Link;
 
 
 /**
- * 友链(Link)表服务接口
+ * 友链 业务层
  *
- * @author makejava
- * @since 2023-03-17 17:26:16
+ * @author Achen
  */
 public interface LinkService extends IService<Link> {
     /**

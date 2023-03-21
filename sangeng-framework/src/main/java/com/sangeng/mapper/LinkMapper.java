@@ -7,8 +7,7 @@ import com.sangeng.domain.entity.Link;
 /**
  * 友链(Link)表数据库访问层
  *
- * @author makejava
- * @since 2023-03-17 17:26:16
+ * @author Achen
  */
 public interface LinkMapper extends BaseMapper<Link> {
 
