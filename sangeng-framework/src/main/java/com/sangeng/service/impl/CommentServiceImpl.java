@@ -7,16 +7,21 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sangeng.constants.SystemConstants;
 import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.entity.Comment;
+import com.sangeng.domain.entity.User;
 import com.sangeng.domain.vo.CommentVo;
 import com.sangeng.domain.vo.PageVo;
+import com.sangeng.enums.AppHttpCodeEnum;
+import com.sangeng.exception.SystemException;
 import com.sangeng.mapper.CommentMapper;
 import com.sangeng.service.CommentService;
 import com.sangeng.service.UserService;
 import com.sangeng.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -51,6 +56,13 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return ResponseResult.okResult(new PageVo(commentVoList, page.getTotal()));
     }
 
+    @Override
+    public ResponseResult addComment(Comment comment) {
+        if (!StringUtils.hasText(comment.getContent())) throw new SystemException(AppHttpCodeEnum.CONTENT_NOT_NULL);
+        save(comment);
+        return ResponseResult.okResult();
+    }
+
     /**
      * 根据根评论的id查询所对应的子评论的集合
      *
@@ -65,7 +77,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 .orderByAsc(Comment::getCreateTime);
         List<Comment> comments = list(queryWrapper);
         return toCommentVoList(comments);
-
+        // Unchecked generics array creation for varargs parameter
     }
 
     /**
@@ -77,13 +89,19 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 .map(comment -> BeanCopyUtils.copyBean(comment, CommentVo.class))
                 .peek(commentVo -> {
                     // 通过creatyBy查询用户的昵称并赋值
-                    String nickName = userService.getById(commentVo.getCreateBy()).getNickName();
-                    commentVo.setUsername(nickName);
+                    User user = userService.getById(commentVo.getCreateBy());
+                    if (!Objects.isNull(user)) {
+                        String nickName = user.getNickName();
+                        commentVo.setUsername(nickName);
+                    }
                     // 通过toCommentUserId查询用户的昵称并赋值
                     // 如果toCommentUserId不为-1才进行查询
                     if (commentVo.getToCommentUserId() != -1) {
-                        String toCommentUserName = userService.getById(commentVo.getToCommentUserId()).getNickName();
-                        commentVo.setToCommentUserName(toCommentUserName);
+                        User user2 = userService.getById(commentVo.getToCommentUserId());
+                        if (!Objects.isNull(user2)) {
+                            String toCommentUserName = user2.getNickName();
+                            commentVo.setToCommentUserName(toCommentUserName);
+                        }
                     }
                 })
                 .collect(Collectors.toList());
