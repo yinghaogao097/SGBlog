@@ -21,4 +21,12 @@ public class SystemConstants {
      * 评论是根评论
      */
     public static final String COMMENT_ROOT_ID = "-1";
+    /**
+     * 文章评论
+     */
+    public static final String ARTICLE_COMMENT = "0";
+    /**
+     * 评论类型为：友联评论
+     */
+    public static final String LINK_COMMENT = "1";
 }

@@ -39,13 +39,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     private UserService userService;
 
     @Override
-    public ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize) {
+    public ResponseResult commentList(String commentType, Long articleId, Integer pageNum, Integer pageSize) {
         // 查询对应文章的根评论
         LambdaQueryWrapper<Comment> queryWrapper = Wrappers.lambdaQuery(Comment.class)
-                // 对articleId进行判断
-                .eq(Comment::getArticleId, articleId)
+                // 对commentType进行判断 commentType为0是文章的评论 必须根据文章查询 如果为1就是友链查询 不用查询文章id
+                .eq(SystemConstants.ARTICLE_COMMENT.equals(commentType), Comment::getArticleId, articleId)
                 // 根评论 rootId为-1
-                .eq(Comment::getRootId, SystemConstants.COMMENT_ROOT_ID);
+                .eq(Comment::getRootId, SystemConstants.COMMENT_ROOT_ID)
+                .eq(Comment::getType, commentType);
 
         // 分页
         Page<Comment> page = new Page<>(pageNum, pageSize);
