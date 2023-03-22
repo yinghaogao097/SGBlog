@@ -6,12 +6,19 @@ import com.sangeng.domain.entity.Comment;
 
 
 /**
- * 评论表(Comment)表服务接口
+ * 评论 业务层
  *
  * @author Achen
  */
 public interface CommentService extends IService<Comment> {
-
+    /**
+     * 查询评论列表
+     *
+     * @param articleId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize);
 }
 

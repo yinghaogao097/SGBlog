@@ -7,7 +7,7 @@ import com.sangeng.service.UserService;
 import org.springframework.stereotype.Service;
 
 /**
- * 用户表(User)表服务实现类
+ * 用户 业务层处理
  *
  * @author Achen
  */

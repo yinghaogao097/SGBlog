@@ -5,7 +5,7 @@ import com.sangeng.domain.entity.User;
 
 
 /**
- * 用户表(User)表服务接口
+ * 用户 业务层
  *
  * @author Achen
  */

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 评论表(Comment)表服务实现类
+ * 评论 业务层处理
  *
  * @author Achen
  */
@@ -46,9 +46,32 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         Page<Comment> page = new Page<>(pageNum, pageSize);
         page(page, queryWrapper);
         List<CommentVo> commentVoList = toCommentVoList(page.getRecords());
+        // 根据根评论的id查询所对应的子评论的集合
+        commentVoList.forEach(commentVO -> commentVO.setChildren(getChildren(commentVO.getId())));
         return ResponseResult.okResult(new PageVo(commentVoList, page.getTotal()));
     }
 
+    /**
+     * 根据根评论的id查询所对应的子评论的集合
+     *
+     * @param id 根评论的id
+     * @return
+     */
+    private List<CommentVo> getChildren(Long id) {
+        LambdaQueryWrapper<Comment> queryWrapper = Wrappers.lambdaQuery(Comment.class)
+                // 根据根评论id查询对应子评论
+                .eq(Comment::getRootId, id)
+                // 根据时间升序排序
+                .orderByAsc(Comment::getCreateTime);
+        List<Comment> comments = list(queryWrapper);
+        return toCommentVoList(comments);
+
+    }
+
+    /**
+     * @param list 评论集合
+     * @return 评论vo集合
+     */
     private List<CommentVo> toCommentVoList(List<Comment> list) {
         return list.stream()
                 .map(comment -> BeanCopyUtils.copyBean(comment, CommentVo.class))
