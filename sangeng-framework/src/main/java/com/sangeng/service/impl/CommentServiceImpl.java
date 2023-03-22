@@ -50,19 +50,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     }
 
     private List<CommentVo> toCommentVoList(List<Comment> list) {
-//        List<CommentVo> commentVos = BeanCopyUtils.copyBeanList(list, CommentVo.class);
-//        //遍历vo集合
-//        for (CommentVo commentVo : commentVos) {
-//
-//            String nickName = userService.getById(commentVo.getCreateBy()).getNickName();
-//            commentVo.setUsername(nickName);
-//
-//            if (commentVo.getToCommentUserId() != -1) {
-//                String toCommentUserName = userService.getById(commentVo.getToCommentUserId()).getNickName();
-//                commentVo.setToCommentUserName(toCommentUserName);
-//            }
-//        }
-//        return commentVos;
         return list.stream()
                 .map(comment -> BeanCopyUtils.copyBean(comment, CommentVo.class))
                 .peek(commentVo -> {
