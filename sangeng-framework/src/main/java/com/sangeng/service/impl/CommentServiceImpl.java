@@ -38,6 +38,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     @Autowired
     private UserService userService;
 
+    /**
+     * 查询评论列表
+     *
+     * @param commentType 文章类型 0代表文章评论 1代表友链评论
+     * @param articleId   文章id
+     * @param pageNum     页码
+     * @param pageSize    页面大小
+     * @return
+     */
     @Override
     public ResponseResult commentList(String commentType, Long articleId, Integer pageNum, Integer pageSize) {
         // 查询对应文章的根评论
@@ -57,6 +66,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return ResponseResult.okResult(new PageVo(commentVoList, page.getTotal()));
     }
 
+    /**
+     * @param comment 评论
+     * @return
+     */
     @Override
     public ResponseResult addComment(Comment comment) {
         if (!StringUtils.hasText(comment.getContent())) throw new SystemException(AppHttpCodeEnum.CONTENT_NOT_NULL);
