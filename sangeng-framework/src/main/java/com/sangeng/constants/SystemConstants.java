@@ -17,4 +17,8 @@ public class SystemConstants {
      * 分类是正常状态
      */
     public static final String LINK_STATUS_NORMAL = "0";
+    /**
+     * 评论是根评论
+     */
+    public static final String COMMENT_ROOT_ID = "-1";
 }
