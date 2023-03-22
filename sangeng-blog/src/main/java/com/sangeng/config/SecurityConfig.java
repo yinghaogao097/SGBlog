@@ -46,6 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/logout").authenticated()
                 // 对于评论接口必须携带token
                 .antMatchers("/comment").authenticated()
+                // 对于个人信息接口必须携带token
+                .antMatchers("/user/userInfo").authenticated()
                 // 除上面外的所有请求全部不需要认证即可访问
                 .anyRequest().permitAll();
         http.logout().disable();
