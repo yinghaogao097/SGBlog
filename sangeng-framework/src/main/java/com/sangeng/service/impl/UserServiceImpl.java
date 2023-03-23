@@ -17,7 +17,11 @@ import org.springframework.stereotype.Service;
  */
 @Service("userService")
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
-
+    /**
+     * 查询用户信息
+     *
+     * @return
+     */
     @Override
     public ResponseResult userInfo() {
         // 获取当前用户id

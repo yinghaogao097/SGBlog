@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 //@ConfigurationProperties(prefix = "oss")
 public class UploadServiceImpl implements UploadService {
     /**
+     * 头像上传
+     *
      * @param img 文件
      * @return
      */
@@ -38,6 +40,5 @@ public class UploadServiceImpl implements UploadService {
         String url = OSSUtils.uploadImgOss(img, filePath);
         return ResponseResult.okResult(url);
     }
-
 
 }

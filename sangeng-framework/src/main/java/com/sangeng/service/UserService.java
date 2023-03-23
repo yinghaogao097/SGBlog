@@ -11,7 +11,10 @@ import com.sangeng.domain.entity.User;
  * @author Achen
  */
 public interface UserService extends IService<User> {
-
+    /**
+     * 查询用户信息
+     * @return
+     */
     ResponseResult userInfo();
 }
 

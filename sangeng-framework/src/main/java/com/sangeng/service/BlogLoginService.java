@@ -9,7 +9,18 @@ import com.sangeng.domain.entity.User;
  * @author Achen
  */
 public interface BlogLoginService {
+    /**
+     * 登录
+     *
+     * @param user 用户
+     * @return
+     */
     ResponseResult login(User user);
 
+    /**
+     * 登出
+     *
+     * @return
+     */
     ResponseResult logout();
 }
