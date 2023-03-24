@@ -4,6 +4,7 @@ import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.entity.User;
 import com.sangeng.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -29,13 +30,24 @@ public class UserController {
     }
 
     /**
-     * 更新用户信息 用户
+     * 更新用户信息
      *
-     * @param user
+     * @param user 用户
      * @return
      */
     @PutMapping("/userInfo")
     public ResponseResult updateUserInfo(@RequestBody User user) {
         return userService.updateUserInfo(user);
+    }
+
+    /**
+     * 注册用户
+     *
+     * @param user 用户
+     * @return
+     */
+    @PostMapping("/register")
+    public ResponseResult register(@RequestBody @Validated User user) {
+        return userService.register(user);
     }
 }
