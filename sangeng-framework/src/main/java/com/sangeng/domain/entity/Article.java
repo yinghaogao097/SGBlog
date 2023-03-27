@@ -79,5 +79,14 @@ public class Article {
      */
     private Integer delFlag;
 
+    public Article(Long id, long viewCount) {
+        this.id = id;
+        this.viewCount = viewCount;
+    }
+
+    public Article setViewCount(Integer count) {
+        this.viewCount = count != null ? count.longValue() : 0L;
+        return this;
+    }
 }
 

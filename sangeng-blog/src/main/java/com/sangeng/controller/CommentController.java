@@ -2,8 +2,14 @@ package com.sangeng.controller;
 
 import com.sangeng.constants.SystemConstants;
 import com.sangeng.domain.ResponseResult;
+import com.sangeng.domain.dto.AddCommentDTO;
 import com.sangeng.domain.entity.Comment;
 import com.sangeng.service.CommentService;
+import com.sangeng.utils.BeanCopyUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/comment")
+@Api(tags = "评论", value = "评论相关接口")
 public class CommentController {
 
     @Autowired
@@ -40,6 +47,11 @@ public class CommentController {
      * @return
      */
     @GetMapping("/linkCommentList")
+    @ApiOperation(value = "友链评论列表", notes = "获取一页友链评论")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "页码"),
+            @ApiImplicitParam(name = "pageSize", value = "每页大小")
+    })
     public ResponseResult linkCommentList(Integer pageNum, Integer pageSize) {
         return commentService.commentList(SystemConstants.LINK_COMMENT, null, pageNum, pageSize);
     }
@@ -47,11 +59,12 @@ public class CommentController {
     /**
      * 发表文章评论
      *
-     * @param comment
+     * @param addCommentDTO
      * @return
      */
     @PostMapping
-    public ResponseResult addComment(@RequestBody Comment comment) {
+    public ResponseResult addComment(@RequestBody AddCommentDTO addCommentDTO) {
+        Comment comment = BeanCopyUtils.copyBean(addCommentDTO, Comment.class);
         return commentService.addComment(comment);
     }
 }

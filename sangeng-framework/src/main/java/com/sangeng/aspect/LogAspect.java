@@ -64,7 +64,7 @@ public class LogAspect {
         // 打印请求入参
         log.info("Request Args   : {}", JSON.toJSONString(joinPoint.getArgs()));
 
-    }
+    } 
 
     private SystemLog getSystemLog(ProceedingJoinPoint joinPoint) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();

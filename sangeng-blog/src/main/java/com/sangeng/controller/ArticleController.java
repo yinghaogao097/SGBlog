@@ -33,7 +33,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/articleList")
-    public ResponseResult articleList(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, Long categoryId) {
+    public ResponseResult articleList(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize, Long categoryId) {
         return articleService.articleList(pageNum, pageSize, categoryId);
     }
 
@@ -46,5 +46,16 @@ public class ArticleController {
     @GetMapping("/{id}")
     public ResponseResult getArticleDetail(@PathVariable("id") Integer id) {
         return articleService.getArticleDetail(id);
+    }
+
+    /**
+     * 更新浏览量时去更新redsi中的数据
+     *
+     * @param id 文章id
+     * @return
+     */
+    @PutMapping("/updateViewCount/{id}")
+    public ResponseResult updateViewCount(@PathVariable("id") Long id) {
+        return articleService.updateViewCount(id);
     }
 }
