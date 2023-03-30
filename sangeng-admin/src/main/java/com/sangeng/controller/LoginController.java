@@ -2,10 +2,13 @@ package com.sangeng.controller;
 
 import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.entity.LoginUser;
+import com.sangeng.domain.entity.Menu;
 import com.sangeng.domain.entity.User;
+import com.sangeng.domain.vo.RoutersVo;
 import com.sangeng.enums.AppHttpCodeEnum;
 import com.sangeng.exception.SystemException;
 import com.sangeng.service.GetInfoService;
+import com.sangeng.service.MenuService;
 import com.sangeng.service.SystemLoginService;
 import com.sangeng.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 后台登录
@@ -28,6 +33,9 @@ public class LoginController {
 
     @Autowired
     private GetInfoService getInfoService;
+
+    @Autowired
+    private MenuService menuService;
 
     /**
      * 用户登录
@@ -55,4 +63,19 @@ public class LoginController {
         LoginUser loginUser = SecurityUtils.getLoginUser();
         return getInfoService.getInfo(loginUser);
     }
+
+    /**
+     * 动态菜单获取
+     *
+     * @return
+     */
+    @GetMapping("getRouters")
+    public ResponseResult<RoutersVo> getRouters() {
+        Long userId = SecurityUtils.getUserId();
+        //查询menu 结果是tree的形式
+        List<Menu> menus = menuService.selectRouterMenuTreeByUserId(userId);
+        //封装数据返回
+        return ResponseResult.okResult(new RoutersVo(menus));
+    }
+
 }
