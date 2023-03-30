@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 对于登录接口 允许匿名访问
                 .antMatchers("/user/login").anonymous()
                 .antMatchers("/doc.html", "/doc.html/**", "/webjars/**", "/v2/**", "/swagger-resources",
-                        "/swagger-resources/**", "/swagger-ui.html", "/swagger-ui.html/**").anonymous()
+                        "/swagger-resources/**", "/swagger-ui.html", "/swagger-ui.html/**").permitAll()
                 // 其它接口都要验证
                 .anyRequest().authenticated();
 

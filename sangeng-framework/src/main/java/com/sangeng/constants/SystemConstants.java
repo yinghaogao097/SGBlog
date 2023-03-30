@@ -29,4 +29,12 @@ public class SystemConstants {
      * 评论类型为：友联评论
      */
     public static final String LINK_COMMENT = "1";
+    /**
+     * 菜单
+     */
+    public static final String MENU = "C";
+    /**
+     * 按钮
+     */
+    public static final String BUTTON = "F";
 }

@@ -1,7 +1,7 @@
 package com.sangeng.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.sangeng.entity.Tag;
+import com.sangeng.domain.entity.Tag;
 
 
 /**

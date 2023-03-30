@@ -1,12 +1,16 @@
 package com.sangeng.controller;
 
 import com.sangeng.domain.ResponseResult;
+import com.sangeng.domain.entity.LoginUser;
 import com.sangeng.domain.entity.User;
 import com.sangeng.enums.AppHttpCodeEnum;
 import com.sangeng.exception.SystemException;
+import com.sangeng.service.GetInfoService;
 import com.sangeng.service.SystemLoginService;
+import com.sangeng.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +26,15 @@ public class LoginController {
     @Autowired
     private SystemLoginService loginService;
 
+    @Autowired
+    private GetInfoService getInfoService;
+
+    /**
+     * 用户登录
+     *
+     * @param user
+     * @return
+     */
     @PostMapping("/user/login")
     public ResponseResult login(@RequestBody User user) {
         if (!StringUtils.hasText(user.getUserName())) {
@@ -29,5 +42,17 @@ public class LoginController {
             throw new SystemException(AppHttpCodeEnum.REQUIRE_USERNAME);
         }
         return loginService.login(user);
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @return
+     */
+    @GetMapping("getInfo")
+    public ResponseResult getInfo() {
+        // 获取当前登录的用户
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        return getInfoService.getInfo(loginUser);
     }
 }

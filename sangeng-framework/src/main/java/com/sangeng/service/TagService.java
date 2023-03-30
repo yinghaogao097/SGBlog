@@ -1,7 +1,7 @@
 package com.sangeng.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.sangeng.entity.Tag;
+import com.sangeng.domain.entity.Tag;
 
 
 /**

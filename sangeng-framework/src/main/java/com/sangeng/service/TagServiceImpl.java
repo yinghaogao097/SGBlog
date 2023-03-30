@@ -1,9 +1,8 @@
-package com.sangeng.service.impl;
+package com.sangeng.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sangeng.entity.Tag;
+import com.sangeng.domain.entity.Tag;
 import com.sangeng.mapper.TagMapper;
-import com.sangeng.service.TagService;
 import org.springframework.stereotype.Service;
 
 /**
