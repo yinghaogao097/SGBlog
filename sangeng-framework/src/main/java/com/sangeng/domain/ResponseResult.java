@@ -6,117 +6,89 @@ import com.sangeng.enums.AppHttpCodeEnum;
 import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResponseResult<T> implements Serializable {
-    private Integer code;
-    private String msg;
-    private T data;
+public class ResponseResult implements Serializable {
+    private final Integer code;
+    private final String msg;
+    private final Object data;
+
+    private static final ResponseResult SUCCESS_RESULT = new ResponseResult(AppHttpCodeEnum.SUCCESS.getCode(), AppHttpCodeEnum.SUCCESS.getMsg());
 
     public ResponseResult() {
-        this.code = AppHttpCodeEnum.SUCCESS.getCode();
-        this.msg = AppHttpCodeEnum.SUCCESS.getMsg();
+        this(AppHttpCodeEnum.SUCCESS.getCode(), AppHttpCodeEnum.SUCCESS.getMsg(), null);
     }
 
-    public ResponseResult(Integer code, T data) {
-        this.code = code;
-        this.data = data;
+    public ResponseResult(Integer code, Object data) {
+        this(code, null, data);
     }
 
-    public ResponseResult(Integer code, String msg, T data) {
+    public ResponseResult(Integer code, String msg, Object data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
     public ResponseResult(Integer code, String msg) {
-        this.code = code;
-        this.msg = msg;
+        this(code, msg, null);
     }
 
     public static ResponseResult errorResult(int code, String msg) {
-        ResponseResult result = new ResponseResult();
-        return result.error(code, msg);
+        return new ResponseResult(code, msg);
     }
+
     public static ResponseResult okResult() {
-        ResponseResult result = new ResponseResult();
-        return result;
+        return SUCCESS_RESULT;
     }
+
     public static ResponseResult okResult(int code, String msg) {
-        ResponseResult result = new ResponseResult();
-        return result.ok(code, null, msg);
+        return new ResponseResult(code, msg);
     }
 
     public static ResponseResult okResult(Object data) {
-        ResponseResult result = setAppHttpCodeEnum(AppHttpCodeEnum.SUCCESS, AppHttpCodeEnum.SUCCESS.getMsg());
-        if(data!=null) {
-            result.setData(data);
-        }
-        return result;
+        return new ResponseResult(AppHttpCodeEnum.SUCCESS.getCode(), null, data);
     }
 
     public static ResponseResult errorResult(AppHttpCodeEnum enums){
-        return setAppHttpCodeEnum(enums,enums.getMsg());
+        return new ResponseResult(enums.getCode(), enums.getMsg());
     }
 
     public static ResponseResult errorResult(AppHttpCodeEnum enums, String msg){
-        return setAppHttpCodeEnum(enums,msg);
+        return new ResponseResult(enums.getCode(), msg);
     }
 
     public static ResponseResult setAppHttpCodeEnum(AppHttpCodeEnum enums){
-        return okResult(enums.getCode(),enums.getMsg());
+        return new ResponseResult(enums.getCode(), enums.getMsg());
     }
 
     private static ResponseResult setAppHttpCodeEnum(AppHttpCodeEnum enums, String msg){
-        return okResult(enums.getCode(),msg);
+        return new ResponseResult(enums.getCode(), msg);
     }
 
-    public ResponseResult<?> error(Integer code, String msg) {
-        this.code = code;
-        this.msg = msg;
-        return this;
+    public ResponseResult error(Integer code, String msg) {
+        return new ResponseResult(code, msg);
     }
 
-    public ResponseResult<?> ok(Integer code, T data) {
-        this.code = code;
-        this.data = data;
-        return this;
+    public ResponseResult ok(Integer code, Object data) {
+        return new ResponseResult(code, null, data);
     }
 
-    public ResponseResult<?> ok(Integer code, T data, String msg) {
-        this.code = code;
-        this.data = data;
-        this.msg = msg;
-        return this;
+    public ResponseResult ok(Integer code, Object data, String msg) {
+        return new ResponseResult(code, msg, data);
     }
 
-    public ResponseResult<?> ok(T data) {
-        this.data = data;
-        return this;
+    public ResponseResult ok(Object data) {
+        return new ResponseResult(AppHttpCodeEnum.SUCCESS.getCode(), null, data);
     }
 
     public Integer getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
     public String getMsg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public T getData() {
+    public Object getData() {
         return data;
     }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-
 
 }

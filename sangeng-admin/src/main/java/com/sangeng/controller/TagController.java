@@ -26,7 +26,7 @@ public class TagController {
      * @return
      */
     @GetMapping("/list")
-    public ResponseResult<Tag> list(Integer pageNum, Integer pageSize, TagListDto tagListDto) {
+    public ResponseResult list(Integer pageNum, Integer pageSize, TagListDto tagListDto) {
         return tagService.pageTagList(pageNum, pageSize, tagListDto);
     }
 
@@ -37,7 +37,7 @@ public class TagController {
      * @return
      */
     @PostMapping
-    public ResponseResult<Tag> insertTag(@RequestBody TagListDto tagListDto) {
+    public ResponseResult insertTag(@RequestBody TagListDto tagListDto) {
         Tag tag = BeanCopyUtils.copyBean(tagListDto, Tag.class);
         return tagService.insertTag(tag);
     }
@@ -45,7 +45,7 @@ public class TagController {
     /**
      * 删除标签
      *
-     * @param tagListDto
+     * @param id
      * @return
      */
     @DeleteMapping("{id}")
