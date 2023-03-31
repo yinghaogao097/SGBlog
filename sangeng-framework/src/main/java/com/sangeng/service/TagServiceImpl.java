@@ -44,16 +44,33 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     }
 
     @Override
-    public ResponseResult<Tag> insertTag(Tag tag) {
+    public ResponseResult insertTag(Tag tag) {
         tagMapper.insert(tag);
         return ResponseResult.okResult();
     }
 
     @Override
-    public ResponseResult<Tag> deleteTags(List<Integer> id) {
+    public ResponseResult deleteTags(List<Integer> id) {
         LambdaUpdateWrapper<Tag> updateWrapper = new LambdaUpdateWrapper<Tag>()
                 .set(Tag::getDelFlag, 1)
                 .in(Tag::getId, id);
+        update(new Tag(), updateWrapper);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getTagById(Integer id) {
+        Tag tag = tagMapper.selectById(id);
+        return ResponseResult.okResult(tag);
+    }
+
+    @Override
+    public ResponseResult updateTagById(Tag tag) {
+        LambdaUpdateWrapper<Tag> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper
+                .set(Tag::getName, tag.getName())
+                .set(Tag::getRemark, tag.getRemark())
+                .eq(Tag::getId, tag.getId());
         update(new Tag(), updateWrapper);
         return ResponseResult.okResult();
     }

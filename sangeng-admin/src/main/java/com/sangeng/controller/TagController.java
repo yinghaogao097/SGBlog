@@ -2,6 +2,7 @@ package com.sangeng.controller;
 
 import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.dto.TagListDto;
+import com.sangeng.domain.dto.UpdateTagDTO;
 import com.sangeng.domain.entity.Tag;
 import com.sangeng.service.TagService;
 import com.sangeng.utils.BeanCopyUtils;
@@ -21,7 +22,7 @@ public class TagController {
     private TagService tagService;
 
     /**
-     * 查询标签
+     * 查询所有标签
      *
      * @return
      */
@@ -49,9 +50,32 @@ public class TagController {
      * @return
      */
     @DeleteMapping("{id}")
-    public ResponseResult<Tag> deleteTags(@PathVariable("id") List<Integer> id) {
+    public ResponseResult deleteTags(@PathVariable("id") List<Integer> id) {
 
         return tagService.deleteTags(id);
+    }
+
+    /**
+     * 获取标签
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("{id}")
+    public ResponseResult getTag(@PathVariable("id") Integer id) {
+        return tagService.getTagById(id);
+    }
+
+    /**
+     * 修改标签
+     *
+     * @param id
+     * @return
+     */
+    @PutMapping
+    public ResponseResult updateTag(@RequestBody UpdateTagDTO updateTagDTO) {
+        Tag tag = BeanCopyUtils.copyBean(updateTagDTO, Tag.class);
+        return tagService.updateTagById(tag);
     }
 
 }

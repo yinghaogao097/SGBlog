@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseResult implements Serializable {
+    private static final long serialVersionUID = 2868731317035706582L;
     private final Integer code;
     private final String msg;
     private final Object data;

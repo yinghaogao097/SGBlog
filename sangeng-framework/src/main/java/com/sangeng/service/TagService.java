@@ -22,15 +22,15 @@ public interface TagService extends IService<Tag> {
      * @param tagListDto
      * @return
      */
-    ResponseResult<Tag> pageTagList(Integer pageNum, Integer pageSize, TagListDto tagListDto);
+    ResponseResult pageTagList(Integer pageNum, Integer pageSize, TagListDto tagListDto);
 
     /**
      * 新增标签
      *
-     * @param tagListDto
+     * @param tag
      * @return
      */
-    ResponseResult<Tag> insertTag(Tag tag);
+    ResponseResult insertTag(Tag tag);
 
     /**
      * 删除标签
@@ -38,6 +38,22 @@ public interface TagService extends IService<Tag> {
      * @param id
      * @return
      */
-    ResponseResult<Tag> deleteTags(List<Integer> id);
+    ResponseResult deleteTags(List<Integer> id);
+
+    /**
+     * 获取标签
+     *
+     * @param id
+     * @return
+     */
+    ResponseResult getTagById(Integer id);
+
+    /**
+     * 修改标签
+     *
+     * @param tag
+     * @return
+     */
+    ResponseResult updateTagById(Tag tag);
 }
 
