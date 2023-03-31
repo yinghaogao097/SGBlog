@@ -78,4 +78,14 @@ public class TagController {
         return tagService.updateTagById(tag);
     }
 
+    /**
+     * 查询所有标签
+     *
+     * @return
+     */
+    @GetMapping("listAllTag")
+    public ResponseResult listAllTag() {
+        return tagService.listAllTag();
+    }
+
 }

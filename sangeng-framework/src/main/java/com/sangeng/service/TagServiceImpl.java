@@ -9,7 +9,9 @@ import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.dto.TagListDto;
 import com.sangeng.domain.entity.Tag;
 import com.sangeng.domain.vo.PageVo;
+import com.sangeng.domain.vo.TagVo;
 import com.sangeng.mapper.TagMapper;
+import com.sangeng.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -73,6 +75,13 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
                 .eq(Tag::getId, tag.getId());
         update(new Tag(), updateWrapper);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult listAllTag() {
+        List<Tag> tags = tagMapper.selectList(null);
+        List<TagVo> tagVos = BeanCopyUtils.copyBeanList(tags, TagVo.class);
+        return ResponseResult.okResult(tagVos);
     }
 }
 
