@@ -6,6 +6,7 @@ import com.sangeng.constants.SystemConstants;
 import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.entity.Article;
 import com.sangeng.domain.entity.Category;
+import com.sangeng.domain.vo.AllCategoryVo;
 import com.sangeng.domain.vo.CategoryVo;
 import com.sangeng.mapper.CategoryMapper;
 import com.sangeng.service.ArticleService;
@@ -30,6 +31,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private CategoryMapper categoryMapper;
+
     @Override
 
     public ResponseResult getCategoryList() {
@@ -52,6 +56,13 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         // 封装vo
         List<CategoryVo> categoryVos = BeanCopyUtils.copyBeanList(categories, CategoryVo.class);
         return ResponseResult.okResult(categoryVos);
+    }
+
+    @Override
+    public ResponseResult listAllCategory() {
+        List<Category> categories = categoryMapper.selectList(null);
+        List<AllCategoryVo> allCategoryVos = BeanCopyUtils.copyBeanList(categories, AllCategoryVo.class);
+        return ResponseResult.okResult(allCategoryVos);
     }
 }
 

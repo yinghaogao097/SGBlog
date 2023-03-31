@@ -69,7 +69,7 @@ public class TagController {
     /**
      * 修改标签
      *
-     * @param id
+     * @param updateTagDTO
      * @return
      */
     @PutMapping
