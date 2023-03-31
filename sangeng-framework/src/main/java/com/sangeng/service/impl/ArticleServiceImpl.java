@@ -201,5 +201,4 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         update(updateWrapper);
         return ResponseResult.okResult();
     }
-
 }

@@ -4,12 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sangeng.constants.SystemConstants;
+import com.sangeng.domain.ResponseResult;
+import com.sangeng.domain.dto.GetMenuListDto;
 import com.sangeng.domain.entity.Menu;
+import com.sangeng.domain.vo.MenuVo;
 import com.sangeng.mapper.MenuMapper;
 import com.sangeng.service.MenuService;
+import com.sangeng.utils.BeanCopyUtils;
 import com.sangeng.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,6 +63,19 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         // 构建tree
         // 先找出第一层的菜单 然后去找它们的子菜单设置到children属性中
         return builderMenuTree(menus, 0L);
+    }
+
+    @Override
+    public ResponseResult getMenuList(GetMenuListDto getMenuListDto) {
+        LambdaQueryWrapper<Menu> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper
+                .eq(StringUtils.hasText(getMenuListDto.getStatus()), Menu::getStatus, getMenuListDto.getStatus())
+                .eq(StringUtils.hasText(getMenuListDto.getMenuName()), Menu::getMenuName, getMenuListDto.getMenuName())
+                .orderByAsc(Menu::getParentId)
+                .orderByAsc(Menu::getOrderNum);
+        List<Menu> menus = menuMapper.selectList(queryWrapper);
+        List<MenuVo> menuVos = BeanCopyUtils.copyBeanList(menus, MenuVo.class);
+        return ResponseResult.okResult(menuVos);
     }
 
     private List<Menu> builderMenuTree(List<Menu> menus, long parentId) {
