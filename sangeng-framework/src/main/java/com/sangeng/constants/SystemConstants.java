@@ -10,6 +10,10 @@ public class SystemConstants {
      */
     public static final String ARTICLE_STATUS_NORMAL = "0";
     /**
+     * 文章是删除状态
+     */
+    public static final String ARTICLE_DELETE_FLAG = "1";
+    /**
      * 分类是正常状态
      */
     public static final String CATEGORY_STATUS_NORMAL = "0";

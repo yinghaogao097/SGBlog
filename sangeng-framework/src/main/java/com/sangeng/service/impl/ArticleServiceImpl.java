@@ -1,6 +1,7 @@
 package com.sangeng.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -178,17 +179,26 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Article::getId, article.getId());
         updateById(article);
-        // 把tagid存储到文章标签关联表
+        // 删除原有的文章标签关联记录
+        articleTagService.remove(new LambdaQueryWrapper<ArticleTag>().eq(ArticleTag::getArticleId, article.getId()));
+        // 添加新的文章标签关联记录
         List<ArticleTag> articleTags = adminArticleDetailDto.getTags()
                 .stream()
                 .map(tagId -> new ArticleTag(article.getId(), tagId))
-                // 只插入不存在的记录
-                .filter(articleTag -> !articleTagService.exists(articleTag))
                 .collect(Collectors.toList());
-        // 批量添加文章标签关联记录
         if (!articleTags.isEmpty()) {
             articleTagService.saveBatch(articleTags);
         }
+        return ResponseResult.okResult();
+    }
+
+
+    @Override
+    public ResponseResult deleteArticle(List<Integer> id) {
+        LambdaUpdateWrapper<Article> updateWrapper = new LambdaUpdateWrapper<Article>()
+                .set(Article::getDelFlag, SystemConstants.ARTICLE_DELETE_FLAG)
+                .in(Article::getId, id);
+        update(updateWrapper);
         return ResponseResult.okResult();
     }
 

@@ -7,6 +7,8 @@ import com.sangeng.domain.dto.AdminArticleDetailDto;
 import com.sangeng.domain.dto.ListArticleDto;
 import com.sangeng.domain.entity.Article;
 
+import java.util.List;
+
 /**
  * 文章 业务层
  *
@@ -79,4 +81,12 @@ public interface ArticleService extends IService<Article> {
      * @return
      */
     ResponseResult updateAdminArticleDetail(AdminArticleDetailDto adminArticleDetailDto);
+
+    /**
+     * 根据id删除文章
+     *
+     * @param id
+     * @return
+     */
+    ResponseResult deleteArticle(List<Integer> id);
 }

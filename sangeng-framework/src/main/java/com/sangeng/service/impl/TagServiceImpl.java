@@ -1,4 +1,4 @@
-package com.sangeng.service;
+package com.sangeng.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -11,6 +11,7 @@ import com.sangeng.domain.entity.Tag;
 import com.sangeng.domain.vo.PageVo;
 import com.sangeng.domain.vo.TagVo;
 import com.sangeng.mapper.TagMapper;
+import com.sangeng.service.TagService;
 import com.sangeng.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,7 +57,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
         LambdaUpdateWrapper<Tag> updateWrapper = new LambdaUpdateWrapper<Tag>()
                 .set(Tag::getDelFlag, 1)
                 .in(Tag::getId, id);
-        update(new Tag(), updateWrapper);
+        update(updateWrapper);
         return ResponseResult.okResult();
     }
 

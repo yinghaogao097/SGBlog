@@ -8,6 +8,8 @@ import com.sangeng.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author Achen
  */
@@ -64,8 +66,14 @@ public class ArticleController {
         return articleService.updateAdminArticleDetail(adminArticleDetailDto);
     }
 
+    /**
+     * 根据id批量删除文章
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("{id}")
-    public ResponseResult getAdminArticleDetail(@PathVariable("id") Integer id) {
-        return articleService.getAdminArticleDetail(id);
+    public ResponseResult deleteArticle(@PathVariable("id") List<Integer> id) {
+        return articleService.deleteArticle(id);
     }
 }
