@@ -41,6 +41,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
                     .map(Menu::getPerms)
                     .collect(Collectors.toList());
         }
+        // 否则根据id查权限
         return getBaseMapper().selectPermsByUserId(id);
     }
 
