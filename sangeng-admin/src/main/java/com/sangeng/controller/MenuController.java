@@ -38,4 +38,37 @@ public class MenuController {
     public ResponseResult addMenu(@RequestBody Menu menu) {
         return menuService.addMenu(menu);
     }
+
+    /**
+     * 根据id获取菜单
+     *
+     * @param menu
+     * @return
+     */
+    @GetMapping("{id}")
+    public ResponseResult getMenuById(@PathVariable Integer id) {
+        return menuService.getMenuById(id);
+    }
+
+    /**
+     * 修改菜单
+     *
+     * @param menu
+     * @return
+     */
+    @PutMapping()
+    public ResponseResult updateMenu(@RequestBody Menu menu) {
+        return menuService.updateMenu(menu);
+    }
+
+    /**
+     * 删除菜单
+     *
+     * @param menuId
+     * @return
+     */
+    @DeleteMapping("{menuId}")
+    public ResponseResult deleteMenu(@PathVariable("menuId") Integer menuId) {
+        return menuService.deleteMenu(menuId);
+    }
 }

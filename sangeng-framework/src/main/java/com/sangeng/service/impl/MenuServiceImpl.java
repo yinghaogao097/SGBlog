@@ -1,12 +1,14 @@
 package com.sangeng.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sangeng.constants.SystemConstants;
 import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.dto.GetMenuListDto;
 import com.sangeng.domain.entity.Menu;
+import com.sangeng.domain.vo.MenuByIdVo;
 import com.sangeng.domain.vo.MenuVo;
 import com.sangeng.mapper.MenuMapper;
 import com.sangeng.service.MenuService;
@@ -81,6 +83,42 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public ResponseResult addMenu(Menu menu) {
         save(menu);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getMenuById(Integer id) {
+        Menu menu = getById(id);
+        MenuByIdVo menuByIdVo = BeanCopyUtils.copyBean(menu, MenuByIdVo.class);
+        return ResponseResult.okResult(menuByIdVo);
+    }
+
+    @Override
+    public ResponseResult updateMenu(Menu menu) {
+        Menu oldMenu = getById(menu.getParentId());
+        // 比较
+        if (menu.getMenuName().equals(oldMenu.getMenuName())) {
+            return ResponseResult.errorResult(500, "修改菜单[" + menu.getMenuName() + "]失败，上级菜单不能选择自己");
+        } else {
+            updateById(menu);
+            return ResponseResult.okResult();
+        }
+    }
+
+    @Override
+    public ResponseResult deleteMenu(Integer menuId) {
+        // 查询是否存在子菜单
+        LambdaQueryWrapper<Menu> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Menu::getParentId, menuId);
+        int childCount = menuMapper.selectCount(queryWrapper);
+        if (childCount > 0) {
+            return ResponseResult.errorResult(500, "存在子菜单不允许删除");
+        }
+        LambdaUpdateWrapper<Menu> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper
+                .set(Menu::getDelFlag, SystemConstants.MENU_DELETE_FLAG)
+                .eq(Menu::getId, menuId);
+        update(updateWrapper);
         return ResponseResult.okResult();
     }
 

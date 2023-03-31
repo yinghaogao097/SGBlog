@@ -45,5 +45,29 @@ public interface MenuService extends IService<Menu> {
      * @return
      */
     ResponseResult addMenu(Menu menu);
+
+    /**
+     * 根据id获取菜单
+     *
+     * @param id
+     * @return
+     */
+    ResponseResult getMenuById(Integer id);
+
+    /**
+     * 修改菜单
+     *
+     * @param menu
+     * @return
+     */
+    ResponseResult updateMenu(Menu menu);
+
+    /**
+     * 删除菜单
+     *
+     * @param menuId
+     * @return
+     */
+    ResponseResult deleteMenu(Integer menuId);
 }
 
