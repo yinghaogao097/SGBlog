@@ -7,13 +7,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sangeng.constants.SystemConstants;
 import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.dto.AddArticleDto;
+import com.sangeng.domain.dto.AdminArticleDetailDto;
+import com.sangeng.domain.dto.ListArticleDto;
 import com.sangeng.domain.entity.Article;
 import com.sangeng.domain.entity.ArticleTag;
 import com.sangeng.domain.entity.Category;
-import com.sangeng.domain.vo.ArticleDetailVo;
-import com.sangeng.domain.vo.ArticleListVo;
-import com.sangeng.domain.vo.HotArticleVo;
-import com.sangeng.domain.vo.PageVo;
+import com.sangeng.domain.vo.*;
 import com.sangeng.mapper.ArticleMapper;
 import com.sangeng.service.ArticleService;
 import com.sangeng.service.ArticleTagService;
@@ -22,6 +21,8 @@ import com.sangeng.utils.BeanCopyUtils;
 import com.sangeng.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -123,6 +124,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
+    @Transactional
     public ResponseResult add(AddArticleDto addArticleDto) {
         // 添加博客
         Article article = BeanCopyUtils.copyBean(addArticleDto, Article.class);
@@ -134,6 +136,59 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                 .map(tagId -> new ArticleTag(article.getId(), tagId))
                 .collect(Collectors.toList());
         articleTagService.saveBatch(articleTags);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult listArticle(Integer pageNum, Integer pageSize, ListArticleDto listArticleDto) {
+        // 查询条件
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper
+                .like(StringUtils.hasText(listArticleDto.getTitle()), Article::getTitle, listArticleDto.getTitle())
+                .or()
+                .like(StringUtils.hasText(listArticleDto.getSummary()), Article::getSummary, listArticleDto.getSummary());
+        // 分页
+        Page<Article> page = new Page<>(pageNum, pageSize);
+        Page<Article> articlePage = page(page, queryWrapper);
+        // 获取数据
+        List<Article> articleList = articlePage.getRecords();
+        List<ArticleAllVo> articleAllVos = BeanCopyUtils.copyBeanList(articleList, ArticleAllVo.class);
+        long total = page.getTotal();
+        return ResponseResult.okResult(new PageVo(articleAllVos, total));
+    }
+
+    @Override
+    public ResponseResult getAdminArticleDetail(Integer id) {
+        Article article = articleMapper.selectById(id);
+        AdminArticleDetailVo adminArticleDetailVo = BeanCopyUtils.copyBean(article, AdminArticleDetailVo.class);
+        LambdaQueryWrapper<ArticleTag> queryWrapper = new LambdaQueryWrapper<>();
+        // 根据条件查询当前文章的tag
+        queryWrapper.eq(ArticleTag::getArticleId, article.getId());
+        List<ArticleTag> list = articleTagService.list(queryWrapper);
+        List<Long> tagList = list.stream().map(ArticleTag::getTagId).collect(Collectors.toList());
+        adminArticleDetailVo.setTags(tagList);
+        return ResponseResult.okResult(adminArticleDetailVo);
+    }
+
+    @Override
+    @Transactional
+    public ResponseResult updateAdminArticleDetail(AdminArticleDetailDto adminArticleDetailDto) {
+        // 转换为文章后存储
+        Article article = BeanCopyUtils.copyBean(adminArticleDetailDto, Article.class);
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Article::getId, article.getId());
+        updateById(article);
+        // 把tagid存储到文章标签关联表
+        List<ArticleTag> articleTags = adminArticleDetailDto.getTags()
+                .stream()
+                .map(tagId -> new ArticleTag(article.getId(), tagId))
+                // 只插入不存在的记录
+                .filter(articleTag -> !articleTagService.exists(articleTag))
+                .collect(Collectors.toList());
+        // 批量添加文章标签关联记录
+        if (!articleTags.isEmpty()) {
+            articleTagService.saveBatch(articleTags);
+        }
         return ResponseResult.okResult();
     }
 

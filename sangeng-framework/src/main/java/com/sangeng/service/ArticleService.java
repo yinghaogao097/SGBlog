@@ -3,6 +3,8 @@ package com.sangeng.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.dto.AddArticleDto;
+import com.sangeng.domain.dto.AdminArticleDetailDto;
+import com.sangeng.domain.dto.ListArticleDto;
 import com.sangeng.domain.entity.Article;
 
 /**
@@ -51,4 +53,30 @@ public interface ArticleService extends IService<Article> {
      * @return
      */
     ResponseResult add(AddArticleDto addArticleDto);
+
+    /**
+     * 文章列表查找
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param listArticleDto
+     * @return
+     */
+    ResponseResult listArticle(Integer pageNum, Integer pageSize, ListArticleDto listArticleDto);
+
+    /**
+     * 根据id查询文章详情
+     *
+     * @param id
+     * @return
+     */
+    ResponseResult getAdminArticleDetail(Integer id);
+
+    /**
+     * 修改文章
+     *
+     * @param adminArticleDetailDto
+     * @return
+     */
+    ResponseResult updateAdminArticleDetail(AdminArticleDetailDto adminArticleDetailDto);
 }

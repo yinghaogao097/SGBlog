@@ -10,6 +10,6 @@ import com.sangeng.domain.entity.ArticleTag;
  * @author Achen
  */
 public interface ArticleTagService extends IService<ArticleTag> {
-
+    boolean exists(ArticleTag articleTag);
 }
 

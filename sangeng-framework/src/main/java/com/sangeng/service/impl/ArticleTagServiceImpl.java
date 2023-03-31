@@ -1,5 +1,6 @@
 package com.sangeng.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sangeng.domain.entity.ArticleTag;
 import com.sangeng.mapper.ArticleTagMapper;
@@ -14,5 +15,12 @@ import org.springframework.stereotype.Service;
 @Service("articleTagService")
 public class ArticleTagServiceImpl extends ServiceImpl<ArticleTagMapper, ArticleTag> implements ArticleTagService {
 
+    @Override
+    public boolean exists(ArticleTag articleTag) {
+        LambdaQueryWrapper<ArticleTag> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ArticleTag::getArticleId, articleTag.getArticleId());
+        queryWrapper.eq(ArticleTag::getTagId, articleTag.getTagId());
+        return count(queryWrapper) > 0;
+    }
 }
 
