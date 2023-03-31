@@ -78,6 +78,12 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         return ResponseResult.okResult(menuVos);
     }
 
+    @Override
+    public ResponseResult addMenu(Menu menu) {
+        save(menu);
+        return ResponseResult.okResult();
+    }
+
     private List<Menu> builderMenuTree(List<Menu> menus, long parentId) {
         return menus.stream()
                 // 只保留父id为0的集合
