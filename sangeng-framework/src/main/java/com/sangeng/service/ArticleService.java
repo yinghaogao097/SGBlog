@@ -2,6 +2,7 @@ package com.sangeng.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sangeng.domain.ResponseResult;
+import com.sangeng.domain.dto.AddArticleDto;
 import com.sangeng.domain.entity.Article;
 
 /**
@@ -36,10 +37,18 @@ public interface ArticleService extends IService<Article> {
     ResponseResult getArticleDetail(Integer id);
 
     /**
-     * 更新浏览量时去更新redsi中的数据
+     * 更新浏览量时去更新redis中的数据
      *
      * @param id 文章id
      * @return
      */
     ResponseResult updateViewCount(Long id);
+
+    /**
+     * 写博文
+     *
+     * @param article
+     * @return
+     */
+    ResponseResult add(AddArticleDto addArticleDto);
 }
