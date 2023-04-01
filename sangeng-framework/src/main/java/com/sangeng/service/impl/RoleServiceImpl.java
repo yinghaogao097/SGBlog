@@ -65,5 +65,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         update(updateWrapper);
         return ResponseResult.okResult();
     }
+
+    @Override
+    public ResponseResult addRole() {
+
+        return null;
+    }
 }
 

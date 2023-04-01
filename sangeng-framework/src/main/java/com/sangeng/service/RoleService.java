@@ -30,9 +30,17 @@ public interface RoleService extends IService<Role> {
 
     /**
      * 改变角色状态
+     *
      * @param changeStatusDto
      * @return
      */
     ResponseResult changeStatus(ChangeStatusDto changeStatusDto);
+
+    /**
+     * 新增角色
+     *
+     * @return
+     */
+    ResponseResult addRole();
 }
 

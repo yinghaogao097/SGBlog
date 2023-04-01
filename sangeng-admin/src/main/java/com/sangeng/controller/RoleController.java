@@ -40,4 +40,14 @@ public class RoleController {
     public ResponseResult changeStatus(@RequestBody ChangeStatusDto changeStatusDto) {
         return roleService.changeStatus(changeStatusDto);
     }
+
+    /**
+     * 新增角色 能够直接设置角色所关联的菜单权限
+     *
+     * @return
+     */
+    @PutMapping("/treeselect")
+    public ResponseResult addRole() {
+        return roleService.addRole();
+    }
 }
