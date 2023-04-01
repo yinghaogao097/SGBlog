@@ -17,7 +17,15 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    public ResponseResult gerRoleList(Integer pageNum, Integer pageSize, GetRoleDto getRoleDto){
-
+    /**
+     * 获取角色列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param getRoleDto
+     * @return
+     */
+    public ResponseResult gerRoleList(Integer pageNum, Integer pageSize, GetRoleDto getRoleDto) {
+        return roleService.gerRoleList(pageNum, pageSize, getRoleDto);
     }
 }

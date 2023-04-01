@@ -1,10 +1,18 @@
 package com.sangeng.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sangeng.domain.ResponseResult;
+import com.sangeng.domain.dto.GetRoleDto;
 import com.sangeng.domain.entity.Role;
+import com.sangeng.domain.vo.PageVo;
+import com.sangeng.domain.vo.RoleVo;
 import com.sangeng.mapper.RoleMapper;
 import com.sangeng.service.RoleService;
+import com.sangeng.utils.BeanCopyUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +35,23 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         }
         // 否则查询用户所具有的角色信息
         return getBaseMapper().selectRoleKeyByUserId(id);
+    }
+
+    @Override
+    public ResponseResult gerRoleList(Integer pageNum, Integer pageSize, GetRoleDto getRoleDto) {
+        // 构建查询条件
+        LambdaQueryWrapper<Role> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper
+                .like(StringUtils.hasText(getRoleDto.getRoleName()), Role::getRoleName, getRoleDto.getRoleName())
+                .eq(StringUtils.hasText(getRoleDto.getStatus()), Role::getStatus, getRoleDto.getStatus())
+                .orderByAsc(Role::getRoleSort);
+        // 创建分页
+        Page<Role> page = new Page<>(pageNum, pageSize);
+        page(page, queryWrapper);
+        // bean拷贝
+        List<Role> records = page.getRecords();
+        List<RoleVo> roleVos = BeanCopyUtils.copyBeanList(records, RoleVo.class);
+        return ResponseResult.okResult(new PageVo(roleVos, page.getTotal()));
     }
 }
 
