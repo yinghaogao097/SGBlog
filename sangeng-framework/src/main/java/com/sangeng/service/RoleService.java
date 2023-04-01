@@ -2,6 +2,7 @@ package com.sangeng.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sangeng.domain.ResponseResult;
+import com.sangeng.domain.dto.AddRoleDto;
 import com.sangeng.domain.dto.ChangeStatusDto;
 import com.sangeng.domain.dto.GetRoleDto;
 import com.sangeng.domain.entity.Role;
@@ -37,10 +38,26 @@ public interface RoleService extends IService<Role> {
     ResponseResult changeStatus(ChangeStatusDto changeStatusDto);
 
     /**
-     * 新增角色
+     * 获取菜单树
      *
      * @return
      */
-    ResponseResult addRole();
+    ResponseResult gerTreesSelect();
+
+    /**
+     * 新增角色
+     *
+     * @param addRoleDto
+     * @return
+     */
+    ResponseResult addRole(AddRoleDto addRoleDto);
+
+    /**
+     * 角色信息回显
+     *
+     * @param id
+     * @return
+     */
+    ResponseResult getRole(Integer id);
 }
 
