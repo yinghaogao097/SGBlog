@@ -1,5 +1,6 @@
 package com.sangeng.domain.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,4 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChangeStatusDto {
+    /**
+     * 角色id
+     */
+    private String roleId;
+    /**
+     * 角色状态
+     */
+    private String status;
 }

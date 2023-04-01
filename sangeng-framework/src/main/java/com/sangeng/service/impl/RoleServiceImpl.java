@@ -1,9 +1,11 @@
 package com.sangeng.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sangeng.domain.ResponseResult;
+import com.sangeng.domain.dto.ChangeStatusDto;
 import com.sangeng.domain.dto.GetRoleDto;
 import com.sangeng.domain.entity.Role;
 import com.sangeng.domain.vo.PageVo;
@@ -52,6 +54,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         List<Role> records = page.getRecords();
         List<RoleVo> roleVos = BeanCopyUtils.copyBeanList(records, RoleVo.class);
         return ResponseResult.okResult(new PageVo(roleVos, page.getTotal()));
+    }
+
+    @Override
+    public ResponseResult changeStatus(ChangeStatusDto changeStatusDto) {
+        LambdaUpdateWrapper<Role> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper
+                .set(Role::getStatus, changeStatusDto.getStatus())
+                .eq(Role::getId, changeStatusDto.getRoleId());
+        update(updateWrapper);
+        return ResponseResult.okResult();
     }
 }
 
