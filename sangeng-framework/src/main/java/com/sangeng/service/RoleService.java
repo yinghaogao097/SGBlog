@@ -5,6 +5,7 @@ import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.dto.AddRoleDto;
 import com.sangeng.domain.dto.ChangeStatusDto;
 import com.sangeng.domain.dto.GetRoleDto;
+import com.sangeng.domain.dto.UpdateRoleDto;
 import com.sangeng.domain.entity.Role;
 
 import java.util.List;
@@ -59,5 +60,21 @@ public interface RoleService extends IService<Role> {
      * @return
      */
     ResponseResult getRole(Integer id);
+
+    /**
+     * 加载对应角色菜单列表树
+     *
+     * @param id
+     * @return
+     */
+    ResponseResult roleMenuTreeSelect(Integer id);
+
+    /**
+     * 修改角色
+     *
+     * @param updateRoleDto
+     * @return
+     */
+    ResponseResult updateRole(UpdateRoleDto updateRoleDto);
 }
 

@@ -22,6 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Jwt 身份验证令牌过滤器
+ */
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
@@ -32,7 +35,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //获取请求头中的token
         String token = request.getHeader("token");
-        if(!StringUtils.hasText(token)){
+        if (!StringUtils.hasText(token)) {
             //说明该接口不需要登录  直接放行
             filterChain.doFilter(request, response);
             return;
@@ -53,14 +56,14 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         //从redis中获取用户信息
         LoginUser loginUser = redisCache.getCacheObject("login:" + userId);
         //如果获取不到
-        if(Objects.isNull(loginUser)){
+        if (Objects.isNull(loginUser)) {
             //说明登录过期  提示重新登录
             ResponseResult result = ResponseResult.errorResult(AppHttpCodeEnum.NEED_LOGIN);
             WebUtils.renderString(response, JSON.toJSONString(result));
             return;
         }
         //存入SecurityContextHolder
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser,null,null);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, null);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         filterChain.doFilter(request, response);

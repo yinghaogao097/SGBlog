@@ -8,12 +8,11 @@ import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.dto.AddRoleDto;
 import com.sangeng.domain.dto.ChangeStatusDto;
 import com.sangeng.domain.dto.GetRoleDto;
+import com.sangeng.domain.dto.UpdateRoleDto;
 import com.sangeng.domain.entity.Menu;
 import com.sangeng.domain.entity.Role;
 import com.sangeng.domain.entity.RoleMenu;
-import com.sangeng.domain.vo.MenuTreeVo;
-import com.sangeng.domain.vo.PageVo;
-import com.sangeng.domain.vo.RoleVo;
+import com.sangeng.domain.vo.*;
 import com.sangeng.mapper.MenuMapper;
 import com.sangeng.mapper.RoleMapper;
 import com.sangeng.service.RoleMenuService;
@@ -21,6 +20,7 @@ import com.sangeng.service.RoleService;
 import com.sangeng.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -40,6 +40,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Autowired
     private RoleMenuService roleMenuService;
+
 
     @Override
     public List<String> selectRoleKeyByUserId(Long id) {
@@ -127,7 +128,49 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Override
     public ResponseResult getRole(Integer id) {
-        return null;
+        Role role = getById(id);
+        RoleBackVo roleBackVo = BeanCopyUtils.copyBean(role, RoleBackVo.class);
+        return ResponseResult.okResult(roleBackVo);
+    }
+
+    @Override
+    public ResponseResult roleMenuTreeSelect(Integer id) {
+        // 先查菜单树
+        // 先找出所有菜单
+        List<Menu> menus = menuMapper.selectAllMenu();
+        // bean拷贝
+        List<MenuTreeVo> menuTreeVos = new ArrayList<>();
+        for (Menu menu : menus) {
+            menuTreeVos.add(new MenuTreeVo(menu.getId(), menu.getMenuName(), menu.getParentId(), null));
+        }
+        menuTreeVos = buildTreesSelect(menuTreeVos, 0L);
+        // 再查角色所关联的菜单权限id列表
+        List<Menu> roleMenu = menuMapper.selectAllMenuById(id.longValue());
+        List<String> checkedKeys = new ArrayList<>();
+        for (Menu menu : roleMenu) {
+            checkedKeys.add(menu.getId().toString());
+        }
+        return ResponseResult.okResult(new RoleMenuTreeSelectVo(menuTreeVos, checkedKeys));
+    }
+
+    @Override
+    @Transactional
+    public ResponseResult updateRole(UpdateRoleDto updateRoleDto) {
+        // bean拷贝
+        Role role = BeanCopyUtils.copyBean(updateRoleDto, Role.class);
+        // 更新角色
+        updateById(role);
+        // 删除原有的角色菜单关联记录
+        roleMenuService.remove(new LambdaQueryWrapper<RoleMenu>().eq(RoleMenu::getRoleId, role.getId()));
+        // 添加新的角色菜单关联记录
+        List<RoleMenu> roleMenus = updateRoleDto.getMenuIds()
+                .stream()
+                .map(menuId -> new RoleMenu(role.getId(), menuId))
+                .collect(Collectors.toList());
+        if (!roleMenus.isEmpty()) {
+            roleMenuService.saveBatch(roleMenus);
+        }
+        return ResponseResult.okResult();
     }
 
 

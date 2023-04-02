@@ -4,6 +4,7 @@ import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.dto.AddRoleDto;
 import com.sangeng.domain.dto.ChangeStatusDto;
 import com.sangeng.domain.dto.GetRoleDto;
+import com.sangeng.domain.dto.UpdateRoleDto;
 import com.sangeng.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -71,5 +72,27 @@ public class RoleController {
     @GetMapping("/role/{id}")
     public ResponseResult getRole(@PathVariable("id") Integer id) {
         return roleService.getRole(id);
+    }
+
+    /**
+     * 加载对应角色菜单列表树
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/menu/roleMenuTreeselect/{id}")
+    public ResponseResult roleMenuTreeSelect(@PathVariable("id") Integer id) {
+        return roleService.roleMenuTreeSelect(id);
+    }
+
+    /**
+     * 修改学生
+     *
+     * @param updateRoleDto
+     * @return
+     */
+    @PutMapping("/role")
+    public ResponseResult roleMenuTreeSelect(@RequestBody UpdateRoleDto updateRoleDto) {
+        return roleService.updateRole(updateRoleDto);
     }
 }
