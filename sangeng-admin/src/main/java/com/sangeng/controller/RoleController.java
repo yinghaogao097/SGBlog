@@ -86,7 +86,7 @@ public class RoleController {
     }
 
     /**
-     * 修改学生
+     * 修改角色
      *
      * @param updateRoleDto
      * @return
@@ -94,5 +94,16 @@ public class RoleController {
     @PutMapping("/role")
     public ResponseResult roleMenuTreeSelect(@RequestBody UpdateRoleDto updateRoleDto) {
         return roleService.updateRole(updateRoleDto);
+    }
+
+    /**
+     * 删除角色
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/role/{id}")
+    public ResponseResult deleteRole(@PathVariable("id") Integer id) {
+        return roleService.deleteRole(id);
     }
 }

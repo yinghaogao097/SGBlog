@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sangeng.constants.SystemConstants;
 import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.dto.AddRoleDto;
 import com.sangeng.domain.dto.ChangeStatusDto;
@@ -170,6 +171,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         if (!roleMenus.isEmpty()) {
             roleMenuService.saveBatch(roleMenus);
         }
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult deleteRole(Integer id) {
+        LambdaUpdateWrapper<Role> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper
+                .set(Role::getDelFlag, SystemConstants.ROLE_DELETE_FLAG)
+                .eq(Role::getId, id);
+        update(updateWrapper);
         return ResponseResult.okResult();
     }
 
