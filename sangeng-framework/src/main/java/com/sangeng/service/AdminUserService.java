@@ -43,4 +43,12 @@ public interface AdminUserService extends IService<User> {
      * @return
      */
     ResponseResult changeStatus(UserStatusDto userStatusDto);
+
+    /**
+     * 删除用户
+     *
+     * @param id
+     * @return
+     */
+    ResponseResult deleteUser(Long id);
 }

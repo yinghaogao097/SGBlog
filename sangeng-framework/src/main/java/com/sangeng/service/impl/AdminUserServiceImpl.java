@@ -106,6 +106,16 @@ public class AdminUserServiceImpl extends ServiceImpl<UserMapper, User> implemen
         return null;
     }
 
+    @Override
+    public ResponseResult deleteUser(Long id) {
+        LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper
+                .set(User::getDelFlag, SystemConstants.USER_DELETE_FLAG)
+                .eq(User::getId, id);
+        update(updateWrapper);
+        return ResponseResult.okResult();
+    }
+
     private boolean haeUserName(String userName) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getUserName, userName);

@@ -63,4 +63,15 @@ public class AdminUserController {
     public ResponseResult changeStatus(@RequestBody UserStatusDto userStatusDto) {
         return adminUserService.changeStatus(userStatusDto);
     }
+
+    /**
+     * 删除用户
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/user/{id}")
+    public ResponseResult deleteUser(@PathVariable("id") Long id) {
+        return adminUserService.deleteUser(id);
+    }
 }
