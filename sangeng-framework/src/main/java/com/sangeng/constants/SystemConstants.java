@@ -18,15 +18,19 @@ public class SystemConstants {
      */
     public static final String MENU_DELETE_FLAG = "1";
     /**
-     * 菜单是删除状态
+     * 角色是删除状态
      */
     public static final String ROLE_DELETE_FLAG = "1";
+    /**
+     * 角色是删除状态
+     */
+    public static final String ROLE_NORMAL_FLAG = "0";
     /**
      * 分类是正常状态
      */
     public static final String CATEGORY_STATUS_NORMAL = "0";
     /**
-     * 分类是正常状态
+     * 友链是正常状态
      */
     public static final String LINK_STATUS_NORMAL = "0";
     /**
