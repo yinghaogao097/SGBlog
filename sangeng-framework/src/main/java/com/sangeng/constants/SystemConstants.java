@@ -42,6 +42,10 @@ public class SystemConstants {
      */
     public static final String LINK_STATUS_NORMAL = "0";
     /**
+     * 友链是正常状态
+     */
+    public static final String LINK_STATUS_DELETE = "1";
+    /**
      * 评论是根评论
      */
     public static final String COMMENT_ROOT_ID = "-1";

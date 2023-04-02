@@ -34,7 +34,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     public ResponseResult pageTagList(Integer pageNum, Integer pageSize, TagListDto tagListDto) {
         LambdaQueryWrapper<Tag> queryWrapper =
                 Wrappers.lambdaQuery(Tag.class)
-                        .eq(StringUtils.hasText(tagListDto.getName()), Tag::getName, tagListDto.getName())
+                        .like(StringUtils.hasText(tagListDto.getName()), Tag::getName, tagListDto.getName())
                         .eq(StringUtils.hasText(tagListDto.getRemark()), Tag::getRemark, tagListDto.getName());
         // 分页
         Page<Tag> page = new Page<>();
