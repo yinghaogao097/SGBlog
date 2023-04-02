@@ -14,6 +14,10 @@ public class SystemConstants {
      */
     public static final String ARTICLE_DELETE_FLAG = "1";
     /**
+     * 分类是删除状态
+     */
+    public static final String CATEGORY_DELETE_FLAG = "1";
+    /**
      * 菜单是删除状态
      */
     public static final String MENU_DELETE_FLAG = "1";

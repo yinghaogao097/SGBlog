@@ -1,19 +1,24 @@
 package com.sangeng.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sangeng.constants.SystemConstants;
 import com.sangeng.domain.ResponseResult;
+import com.sangeng.domain.dto.CategoryDto;
 import com.sangeng.domain.entity.Article;
 import com.sangeng.domain.entity.Category;
 import com.sangeng.domain.vo.AllCategoryVo;
 import com.sangeng.domain.vo.CategoryVo;
+import com.sangeng.domain.vo.PageVo;
 import com.sangeng.mapper.CategoryMapper;
 import com.sangeng.service.ArticleService;
 import com.sangeng.service.CategoryService;
 import com.sangeng.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Set;
@@ -61,10 +66,51 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public ResponseResult listAllCategory() {
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Category::getStatus,SystemConstants.CATEGORY_STATUS_NORMAL);
+        queryWrapper.eq(Category::getStatus, SystemConstants.CATEGORY_STATUS_NORMAL);
         List<Category> categories = categoryMapper.selectList(queryWrapper);
         List<AllCategoryVo> allCategoryVos = BeanCopyUtils.copyBeanList(categories, AllCategoryVo.class);
         return ResponseResult.okResult(allCategoryVos);
+    }
+
+    @Override
+    public ResponseResult listPage(Integer pageNum, Integer pageSize, CategoryDto categoryDto) {
+        // 封装查询数据
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper
+                .like(StringUtils.hasText(categoryDto.getName()), Category::getName, categoryDto.getName())
+                .eq(StringUtils.hasText(categoryDto.getStatus()), Category::getStatus, categoryDto.getStatus());
+        // 分页
+        Page<Category> page = new Page<>(pageNum, pageSize);
+        page(page, queryWrapper);
+        return ResponseResult.okResult(new PageVo(page.getRecords(), page.getTotal()));
+    }
+
+    @Override
+    public ResponseResult addCategory(Category category) {
+        save(category);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getCategory(Long id) {
+        Category category = getById(id);
+        return ResponseResult.okResult(category);
+    }
+
+    @Override
+    public ResponseResult updateCategory(Category category) {
+        updateById(category);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult deleteCategory(List<Integer> id) {
+        LambdaUpdateWrapper<Category> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper
+                .set(Category::getDelFlag, SystemConstants.CATEGORY_DELETE_FLAG)
+                .in(Category::getId, id);
+        update(updateWrapper);
+        return ResponseResult.okResult();
     }
 }
 
