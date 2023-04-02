@@ -26,7 +26,7 @@ public class SystemConstants {
      */
     public static final String USER_DELETE_FLAG = "1";
     /**
-     * 角色是删除状态
+     * 角色是正常状态
      */
     public static final String ROLE_NORMAL_FLAG = "0";
     /**

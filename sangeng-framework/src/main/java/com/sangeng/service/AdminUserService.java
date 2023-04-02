@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.dto.AddUserDto;
 import com.sangeng.domain.dto.AdminUserDto;
+import com.sangeng.domain.dto.UpdateUserDto;
 import com.sangeng.domain.dto.UserStatusDto;
 import com.sangeng.domain.entity.User;
 
@@ -51,4 +52,20 @@ public interface AdminUserService extends IService<User> {
      * @return
      */
     ResponseResult deleteUser(Long id);
+
+    /**
+     * 查询用户信息
+     *
+     * @param id
+     * @return
+     */
+    ResponseResult getUser(Long id);
+
+    /**
+     * 修改用户
+     *
+     * @param updateUserDto
+     * @return
+     */
+    ResponseResult updateUser(UpdateUserDto updateUserDto);
 }

@@ -3,6 +3,7 @@ package com.sangeng.controller;
 import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.dto.AddUserDto;
 import com.sangeng.domain.dto.AdminUserDto;
+import com.sangeng.domain.dto.UpdateUserDto;
 import com.sangeng.domain.dto.UserStatusDto;
 import com.sangeng.service.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +74,27 @@ public class AdminUserController {
     @DeleteMapping("/user/{id}")
     public ResponseResult deleteUser(@PathVariable("id") Long id) {
         return adminUserService.deleteUser(id);
+    }
+
+    /**
+     * 查询用户
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/user/{id}")
+    public ResponseResult getUser(@PathVariable("id") Long id) {
+        return adminUserService.getUser(id);
+    }
+
+    /**
+     * 修改用户
+     *
+     * @param updateUserDto
+     * @return
+     */
+    @PutMapping("/user")
+    public ResponseResult updateUser(@RequestBody UpdateUserDto updateUserDto) {
+        return adminUserService.updateUser(updateUserDto);
     }
 }

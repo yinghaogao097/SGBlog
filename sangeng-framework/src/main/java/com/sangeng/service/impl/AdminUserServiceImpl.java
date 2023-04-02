@@ -8,10 +8,12 @@ import com.sangeng.constants.SystemConstants;
 import com.sangeng.domain.ResponseResult;
 import com.sangeng.domain.dto.AddUserDto;
 import com.sangeng.domain.dto.AdminUserDto;
+import com.sangeng.domain.dto.UpdateUserDto;
 import com.sangeng.domain.dto.UserStatusDto;
 import com.sangeng.domain.entity.Role;
 import com.sangeng.domain.entity.User;
 import com.sangeng.domain.entity.UserRole;
+import com.sangeng.domain.vo.GetUserVo;
 import com.sangeng.domain.vo.PageVo;
 import com.sangeng.enums.AppHttpCodeEnum;
 import com.sangeng.exception.SystemException;
@@ -92,7 +94,9 @@ public class AdminUserServiceImpl extends ServiceImpl<UserMapper, User> implemen
                 .stream()
                 .map(roleId -> new UserRole(user.getId(), roleId))
                 .collect(Collectors.toList());
-        userRoleService.saveBatch(userRoles);
+        if (!userRoles.isEmpty()) {
+            userRoleService.saveBatch(userRoles);
+        }
         return ResponseResult.okResult();
     }
 
@@ -114,6 +118,40 @@ public class AdminUserServiceImpl extends ServiceImpl<UserMapper, User> implemen
                 .eq(User::getId, id);
         update(updateWrapper);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getUser(Long id) {
+        // 获取当前角色
+        User user = getById(id);
+        // 获取当前用户所关联角色列表
+        List<UserRole> userRoles = userRoleService.list(new LambdaQueryWrapper<UserRole>().eq(UserRole::getUserId, id));
+        List<Long> roles = userRoles
+                .stream()
+                .map(UserRole::getRoleId)
+                .collect(Collectors.toList());
+        // 获取所有角色
+        List<Role> roleList = roleMapper.selectList(new LambdaQueryWrapper<Role>().eq(Role::getStatus, SystemConstants.ROLE_NORMAL_FLAG));
+        return ResponseResult.okResult(new GetUserVo(roles, roleList, user));
+    }
+
+    @Override
+    public ResponseResult updateUser(UpdateUserDto updateUserDto) {
+        // bean拷贝
+        User user = BeanCopyUtils.copyBean(updateUserDto, User.class);
+        // 更新用户
+        updateById(user);
+        // 删除原有的用户角色关联表
+        userRoleService.remove(new LambdaQueryWrapper<UserRole>().eq(UserRole::getUserId, user.getId()));
+        // 添加新的用户角色关联表
+        List<UserRole> userRoles = updateUserDto.getRoleIds()
+                .stream()
+                .map(roleId -> new UserRole(user.getId(), roleId))
+                .collect(Collectors.toList());
+        if (!userRoles.isEmpty()) {
+            userRoleService.saveBatch(userRoles);
+        }
+        return null;
     }
 
     private boolean haeUserName(String userName) {
